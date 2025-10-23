@@ -27,11 +27,16 @@ The program will prompt you to make your move by choosing a cell coordinate (row
 The agent will then use its value function to choose the best possible move.
 
 ## Milestones
--[X] Implemented the Tic-Tac-Toe game logic and user interface.
--[X] Developed the Tic-Tac-Toe agent with reinforcement learning capabilities (the agent can only play as 'X' for now).
--[X] Created a repository to store and retrieve the value function from a text file.
--[X] The learning rate is reduced over time to allow the agent to stabilize its learning.
--[X] Added functionality to save the value function to a file after each game.
+- [X] Implemented the Tic-Tac-Toe game logic and user interface.
+
+- [X] Developed the Tic-Tac-Toe agent with reinforcement learning capabilities (the agent can only play as 'X' for now).
+
+- [X] Created a repository to store and retrieve the value function from a text file.
+
+- [X] The learning rate is reduced over time to allow the agent to stabilize its learning.
+
+- [X] Added functionality to save the value function to a file after each game.
+
 -[] The agent can play as 'O' as well.
 
 ## Future Improvements
