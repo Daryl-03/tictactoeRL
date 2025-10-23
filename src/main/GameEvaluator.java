@@ -5,7 +5,7 @@ public class GameEvaluator {
     public GameStatus evaluateBoard(int sizeOfBoard, BoardView board) {
         GameToken winner = GameToken.N;
         boolean canPlaceMore = false;
-        // vérifier les lignes
+        // check lines
         for (int i = 1; i <= sizeOfBoard; i++) {
             boolean lineContainsWonSequence = true;
             for (int j = 1; j <= sizeOfBoard; j++) {
@@ -41,7 +41,7 @@ public class GameEvaluator {
         }
 
 
-        // vérifier les diagonales
+        // check diagonals
         boolean containsWonSequence = true;
         for (int i = 1; i <= sizeOfBoard; i++) {
             if( board.getTokenAt(i,i) == GameToken.N || board.getTokenAt(i,i) != board.getTokenAt(1,1)) {
@@ -54,7 +54,7 @@ public class GameEvaluator {
 
         }
 
-        // diag secondaire
+        // anti diag 
         containsWonSequence = true;
         for (int i = 1; i <= sizeOfBoard; i++) {
             if( board.getTokenAt(i,sizeOfBoard-i+1) == GameToken.N || board.getTokenAt(i,sizeOfBoard-i+1) != board.getTokenAt(1,sizeOfBoard)) {
