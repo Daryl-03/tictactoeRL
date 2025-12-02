@@ -16,7 +16,6 @@ public class GameEvaluator {
                 }
                 if (board.getTokenAt(i, j) != board.getTokenAt(i, 1)) {
                     lineContainsWonSequence = false;
-                    break;
                 }
             }
             if(lineContainsWonSequence) {

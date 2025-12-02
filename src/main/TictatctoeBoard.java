@@ -33,6 +33,11 @@ public class TictatctoeBoard implements BoardView{
         }
     }
 
+    public void resetBoard(){
+        initGrid(size);
+        remainingBoxes = size * size;
+    }
+
     private boolean isBetween(int value, int min, int max){
         return (value >= min) && (value <= max );
     }

@@ -11,5 +11,6 @@ public class ConsoleBoardPrinter implements BoardPrinter{
             System.out.println();
             System.out.println("__".repeat(boardView.getSize()));
         }
+        System.out.println();
     }
 }

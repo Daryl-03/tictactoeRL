@@ -81,4 +81,20 @@ package test;
             };
             assertEquals(GameStatus.DRAW, evaluator.evaluateBoard(3, board));
         }
+
+        @Test
+        void testGameStillInProgressWithSomeEmptyCells() {
+            BoardView board = new BoardView() {
+                public GameToken getTokenAt(int i, int j) {
+                    GameToken[][] grid = {
+                        {GameToken.X, GameToken.O, GameToken.X},
+                        {GameToken.X, GameToken.O, GameToken.N},
+                        {GameToken.O, GameToken.X, GameToken.N}
+                    };
+                    return grid[i-1][j-1];
+                }
+                public int getSize() { return 3; }
+            };
+            assertEquals(GameStatus.IN_PROGRESS, evaluator.evaluateBoard(3, board));
+        }
     }

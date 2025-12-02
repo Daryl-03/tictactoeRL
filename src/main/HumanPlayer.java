@@ -12,7 +12,7 @@ public class HumanPlayer implements Player{
     }
 
     @Override
-    public Point play(BoardView board) {
+    public Point play(BoardView board, int gameNumber) {
         Point x = new Point();
         System.out.println("enter line :");
         x.x = sc.nextInt();

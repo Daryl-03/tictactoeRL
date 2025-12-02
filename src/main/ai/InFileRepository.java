@@ -7,11 +7,16 @@ import java.util.stream.Collectors;
 
 public class InFileRepository implements AgentRepository {
 
-    private static final String FILE_PATH = "value_function.txt";
+    public static final String DEFAULT_FILE_PATH = "value_function.txt";
+    private final String filePath;
+
+    public InFileRepository(String filePath) {
+        this.filePath = filePath;
+    }
 
     @Override
     public Map<String, Double> readValueFunction() {
-        Path path = Paths.get(FILE_PATH);
+        Path path = Paths.get(filePath);
         if (!Files.exists(path)) {
             System.out.println("[INFO] No existing value function file found.");
             return new HashMap<>();
@@ -35,7 +40,7 @@ public class InFileRepository implements AgentRepository {
 
     @Override
     public boolean saveValueFunction(Map<String, Double> valueFunction) {
-        Path path = Paths.get(FILE_PATH);
+        Path path = Paths.get(filePath);
 
         try (BufferedWriter writer = Files.newBufferedWriter(path)) {
             for (Map.Entry<String, Double> entry : valueFunction.entrySet()) {
