@@ -12,8 +12,8 @@ public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-//        launchGameAgainstHuman(sc);
-        launchTrainingGames(5000);
+        launchGameAgainstHuman(sc);
+//        launchTrainingGames(50000);
     }
 
     private static void launchGameAgainstHuman(Scanner sc) {
@@ -46,6 +46,6 @@ public class Main {
         if (states == null || states.isEmpty()) {
             states = statesGenerator.generateStates();
         }
-        return new TicTacToeAgent(states, agentRepository, token, 0);
+        return new TicTacToeAgent(states, agentRepository, token, 0.1);
     }
 }

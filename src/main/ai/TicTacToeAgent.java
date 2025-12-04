@@ -16,8 +16,6 @@ public class TicTacToeAgent implements Player {
     private double learningRate = 0.2;
     private final GameToken agentToken;
     private final double epsilon;
-    private boolean wasLastMoveRandom = false;
-    private int moveCount = 0;
 
     public TicTacToeAgent(Map<String, Double> valueFunction, AgentRepository agentRepository, GameToken agentToken, double epsilon) {
         this.valueFunction = valueFunction;
@@ -28,7 +26,7 @@ public class TicTacToeAgent implements Player {
     }
 
     private double getEpsilon(int gameNumber) {
-        return epsilon / (1 + 0.01 * gameNumber);
+        return epsilon ;
     }
 
     private List<Move> computeNextLegalMoves(String boardState, BoardView board) {
@@ -60,15 +58,16 @@ public class TicTacToeAgent implements Player {
                 bestMove = move;
             }
         }
-        wasLastMoveRandom = false;
+        bestMove.setRandom(false);
         return bestMove;
     }
 
     private Move getRandomMove(List<Move> nextLegalMoves) {
-        wasLastMoveRandom = true;
-        moveCount++;
+
         int randomIndex = (int) (Math.random() * nextLegalMoves.size());
-        return nextLegalMoves.get(randomIndex);
+        Move move = nextLegalMoves.get(randomIndex);
+        move.setRandom(true);
+        return move;
     }
 
     private Move getNextMove(String boardState, BoardView board, int gameNumber) {
@@ -99,7 +98,7 @@ public class TicTacToeAgent implements Player {
     }
 
     private void updateLastStateValue(Move move) {
-        if (wasLastMoveRandom) {
+        if (lastMove.isRandom) {
             return;
         }
         double newValue = valueFunction.get(lastMove.state) +
@@ -141,10 +140,15 @@ public class TicTacToeAgent implements Player {
     private static class Move {
         String state;
         Point coordinates;
+        boolean isRandom;
 
         public Move(String state, Point coordinates) {
             this.state = state;
             this.coordinates = coordinates;
+        }
+
+        public void setRandom(boolean random) {
+            isRandom = random;
         }
     }
 }

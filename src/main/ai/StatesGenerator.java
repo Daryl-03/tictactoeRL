@@ -86,7 +86,7 @@ public class StatesGenerator {
         double value = switch (status) {
             case X_WINS -> toPlay == GameToken.X ? 1 : 0;
             case O_WINS -> toPlay == GameToken.O ? 1 : 0;
-            case DRAW -> 0.5;
+            case DRAW -> 0.25;
             case IN_PROGRESS -> 0.5;
         };
         return value;
