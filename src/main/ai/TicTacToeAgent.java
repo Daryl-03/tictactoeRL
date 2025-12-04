@@ -2,7 +2,7 @@ package main.ai;
 
 import main.BoardView;
 import main.GameToken;
-import main.Player;
+import main.player.Player;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ public class TicTacToeAgent implements Player {
     private final Map<String, Double> valueFunction;
     private final AgentRepository agentRepository;
     private Move lastMove;
-    private double learningRate = 0.2;
+    private double learningRate = 0.5;
     private final GameToken agentToken;
     private final double epsilon;
 
@@ -98,7 +98,7 @@ public class TicTacToeAgent implements Player {
     }
 
     private void updateLastStateValue(Move move) {
-        if (lastMove.isRandom) {
+        if (move.isRandom) {
             return;
         }
         double newValue = valueFunction.get(lastMove.state) +

@@ -1,4 +1,6 @@
-package main;
+package main.player;
+
+import main.BoardView;
 
 import java.awt.*;
 

@@ -3,6 +3,8 @@ import main.ai.AgentRepository;
 import main.ai.InFileRepository;
 import main.ai.StatesGenerator;
 import main.ai.TicTacToeAgent;
+import main.player.HumanPlayer;
+import main.player.RandomPlayer;
 
 import java.util.Map;
 import java.util.Scanner;
@@ -13,17 +15,17 @@ public class Main {
         Scanner sc = new Scanner(System.in);
 
         launchGameAgainstHuman(sc);
-//        launchTrainingGames(50000);
+//        launchTrainingGames(3000);
     }
 
     private static void launchGameAgainstHuman(Scanner sc) {
         BoardPrinter boardPrinter = new ConsoleBoardPrinter();
         StatesGenerator statesGenerator = new StatesGenerator(3);
 
-        TicTacToeAgent agentX = getTicTacToeAgent(statesGenerator, GameToken.X, InFileRepository.DEFAULT_FILE_PATH);
+        TicTacToeAgent agent0 = getTicTacToeAgent(statesGenerator, GameToken.O, InFileRepository.DEFAULT_FILE_PATH, 0);
         HumanPlayer humanPlayer = new HumanPlayer(sc);
 
-        TictactoeGame game = new TictactoeGame(3, agentX, humanPlayer, boardPrinter);
+        TictactoeGame game = new TictactoeGame(3, humanPlayer, agent0, boardPrinter);
         game.launchGame();
     }
 
@@ -31,14 +33,15 @@ public class Main {
         BoardPrinter boardPrinter = new VoidBoardPrinter();
         StatesGenerator statesGenerator = new StatesGenerator(3);
 
-        TicTacToeAgent agentX = getTicTacToeAgent(statesGenerator, GameToken.X, InFileRepository.DEFAULT_FILE_PATH);
-        TicTacToeAgent agentO = getTicTacToeAgent(statesGenerator, GameToken.O, InFileRepository.DEFAULT_FILE_PATH);
+        RandomPlayer agentX = new RandomPlayer();
+//        TicTacToeAgent agentX = getTicTacToeAgent(statesGenerator, GameToken.X, InFileRepository.DEFAULT_FILE_PATH);
+        TicTacToeAgent agentO = getTicTacToeAgent(statesGenerator, GameToken.O, InFileRepository.DEFAULT_FILE_PATH, 0.01);
 
         TictactoeGame game = new TictactoeGame(3, agentX, agentO, boardPrinter);
         game.playMultipleGames(numberOfGames);
     }
 
-    private static TicTacToeAgent getTicTacToeAgent(StatesGenerator statesGenerator, GameToken token, String filePath) {
+    private static TicTacToeAgent getTicTacToeAgent(StatesGenerator statesGenerator, GameToken token, String filePath, double epsilon) {
         AgentRepository agentRepository = new InFileRepository(filePath);
 
         Map<String, Double> states = agentRepository.readValueFunction();
@@ -46,6 +49,6 @@ public class Main {
         if (states == null || states.isEmpty()) {
             states = statesGenerator.generateStates();
         }
-        return new TicTacToeAgent(states, agentRepository, token, 0.1);
+        return new TicTacToeAgent(states, agentRepository, token, epsilon);
     }
 }

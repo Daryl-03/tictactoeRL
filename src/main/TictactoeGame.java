@@ -1,5 +1,7 @@
 package main;
 
+import main.player.Player;
+
 import java.awt.*;
 
 public class TictactoeGame {
