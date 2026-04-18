@@ -37,7 +37,7 @@ The agent will then use its value function to choose the best possible move.
 
 - [X] Added functionality to save the value function to a file after each game.
 
--[] The agent can play as 'O' as well.
+- [X] The agent can play as 'O' as well.
 
 ## Future Improvements
 
