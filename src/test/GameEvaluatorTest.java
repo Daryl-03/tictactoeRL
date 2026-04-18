@@ -1,9 +1,9 @@
 package test;
 
-    import main.GameEvaluator;
-    import main.GameStatus;
-    import main.GameToken;
-    import main.BoardView;
+    import main.game.GameEvaluator;
+    import main.game.GameStatus;
+    import main.game.GameToken;
+    import main.game.BoardView;
     import org.junit.jupiter.api.BeforeEach;
     import org.junit.jupiter.api.Test;
     import static org.junit.jupiter.api.Assertions.assertEquals;

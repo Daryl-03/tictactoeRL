@@ -1,6 +1,6 @@
-package main;
+package main.game;
 
-public class TictatctoeBoard implements BoardView{
+public class TictatctoeBoard implements BoardView {
     private final int size;
     private GameToken[][] grid;
     private int remainingBoxes;

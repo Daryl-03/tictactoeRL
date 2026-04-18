@@ -1,7 +1,8 @@
-package main.ai;
+package main.player.ai;
 
-import main.BoardView;
-import main.GameToken;
+import main.game.BoardView;
+import main.game.GameToken;
+import main.game.StateSerializer;
 import main.player.Player;
 
 import java.awt.*;
@@ -37,7 +38,7 @@ public class TicTacToeAgent implements Player {
                 if (board.getTokenAt(i, j) == GameToken.N) {
                     StringBuilder newState = new StringBuilder(stateWithoutToken);
                     newState.setCharAt((i - 1) * board.getSize() + (j - 1), agentToken.toString().charAt(0));
-                    newState.insert(0, agentToken.toString() + "-");
+                    newState.insert(0, agentToken + "-");
                     nextMoves.add(new Move(newState.toString(), new Point(i, j)));
                 }
             }
@@ -47,6 +48,7 @@ public class TicTacToeAgent implements Player {
 
     private Move getGreedyMove(List<Move> nextLegalMoves) {
         Move bestMove = null;
+
         double bestValue = Double.NEGATIVE_INFINITY;
         for (Move move : nextLegalMoves) {
             if (!valueFunction.containsKey(move.state)) {
@@ -58,6 +60,7 @@ public class TicTacToeAgent implements Player {
                 bestMove = move;
             }
         }
+
         bestMove.setRandom(false);
         return bestMove;
     }
@@ -104,21 +107,10 @@ public class TicTacToeAgent implements Player {
         double newValue = valueFunction.get(lastMove.state) +
                 learningRate * (valueFunction.get(move.state) - valueFunction.get(lastMove.state));
         valueFunction.put(lastMove.state, newValue);
-//        System.out.println("Updated value for state " + lastMove.state + " to " + newValue);
-        agentRepository.saveValueFunction(valueFunction);
     }
 
     private StringBuilder getStateString(BoardView board) {
-        StringBuilder boardState = new StringBuilder();
-        boardState.append(agentToken.toString());
-        boardState.append("-");
-        for (int i = 1; i <= board.getSize(); i++) {
-            for (int j = 1; j <= board.getSize(); j++) {
-                GameToken token = board.getTokenAt(i, j);
-                boardState.append(token);
-            }
-        }
-        return boardState;
+        return new StringBuilder(StateSerializer.toKey(board, agentToken));
     }
 
 
@@ -127,6 +119,7 @@ public class TicTacToeAgent implements Player {
     public void notifyEnd(BoardView board) {
         String finalState = getStateString(board).toString();
         updateLastStateValue(new Move(finalState, null));
+        agentRepository.saveValueFunction(valueFunction);
     }
 
     public double getLearningRate() {

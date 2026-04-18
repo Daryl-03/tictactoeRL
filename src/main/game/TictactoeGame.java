@@ -1,24 +1,26 @@
-package main;
+package main.game;
 
+import main.ui.BoardPrinter;
 import main.player.Player;
 
 import java.awt.*;
 
 public class TictactoeGame {
     private final TictatctoeBoard board;
-    final Player player1, player2;
-    final int sizeOfBoard;
+    private final Player player1, player2;
+    private final int sizeOfBoard;
     private GameStatus gameStatus = GameStatus.IN_PROGRESS;
     private final BoardPrinter boardPrinter;
-    private final GameEvaluator gameEvaluator = new GameEvaluator();
+    private final GameEvaluator gameEvaluator;
     private int gameNumber = 1;
 
-    public TictactoeGame(int size, Player player1, Player player2, BoardPrinter boardPrinter){
+    public TictactoeGame(int size, Player player1, Player player2, BoardPrinter boardPrinter, GameEvaluator gameEvaluator){
         board = new TictatctoeBoard(size);
         sizeOfBoard = size;
         this.player1 = player1;
         this.player2 = player2;
         this.boardPrinter = boardPrinter;
+        this.gameEvaluator = gameEvaluator;
     }
 
     public void launchGame(){
@@ -57,7 +59,6 @@ public class TictactoeGame {
         int y_wins=0;
 
         for(int i=0; i<numberOfGames; i++){
-//            System.err.println("Starting Game #: "+ (i+1) +" epsilon: "+ (0.1/(1 + 0.01 * gameNumber)));
             launchGame();
             if (gameStatus == GameStatus.X_WINS)
                 x_wins ++;

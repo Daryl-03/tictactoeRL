@@ -1,4 +1,4 @@
-package main.ai;
+package main.player.ai;
 
 import java.io.*;
 import java.nio.file.*;
@@ -24,7 +24,7 @@ public class InFileRepository implements AgentRepository {
 
         try (BufferedReader reader = Files.newBufferedReader(path)) {
             return reader.lines()
-                    .filter(line -> !line.isEmpty() && line.contains(":"))
+                    .filter(line -> line.contains(":"))
                     .map(line -> line.split(":", 2))
                     .collect(Collectors.toMap(
                             parts -> parts[0],
@@ -39,7 +39,7 @@ public class InFileRepository implements AgentRepository {
     }
 
     @Override
-    public boolean saveValueFunction(Map<String, Double> valueFunction) {
+    public void saveValueFunction(Map<String, Double> valueFunction) {
         Path path = Paths.get(filePath);
 
         try (BufferedWriter writer = Files.newBufferedWriter(path)) {
@@ -47,10 +47,8 @@ public class InFileRepository implements AgentRepository {
                 writer.write(entry.getKey() + ":" + entry.getValue());
                 writer.newLine();
             }
-            return true;
         } catch (IOException e) {
             System.err.println("[ERROR] Failed to save value function: " + e.getMessage());
-            return false;
         }
     }
 }

@@ -1,10 +1,15 @@
-import main.*;
-import main.ai.AgentRepository;
-import main.ai.InFileRepository;
-import main.ai.StatesGenerator;
-import main.ai.TicTacToeAgent;
+import main.player.ai.AgentRepository;
+import main.player.ai.InFileRepository;
+import main.player.ai.StatesGenerator;
+import main.player.ai.TicTacToeAgent;
+import main.game.GameEvaluator;
+import main.game.GameToken;
+import main.game.TictactoeGame;
 import main.player.HumanPlayer;
 import main.player.RandomPlayer;
+import main.ui.BoardPrinter;
+import main.ui.ConsoleBoardPrinter;
+import main.ui.VoidBoardPrinter;
 
 import java.util.Map;
 import java.util.Scanner;
@@ -21,23 +26,25 @@ public class Main {
     private static void launchGameAgainstHuman(Scanner sc) {
         BoardPrinter boardPrinter = new ConsoleBoardPrinter();
         StatesGenerator statesGenerator = new StatesGenerator(3);
+        GameEvaluator gameEvaluator = new GameEvaluator();
 
-        TicTacToeAgent agent0 = getTicTacToeAgent(statesGenerator, GameToken.O, InFileRepository.DEFAULT_FILE_PATH, 0);
+        TicTacToeAgent agentX = getTicTacToeAgent(statesGenerator, GameToken.X, InFileRepository.DEFAULT_FILE_PATH, 0);
         HumanPlayer humanPlayer = new HumanPlayer(sc);
 
-        TictactoeGame game = new TictactoeGame(3, humanPlayer, agent0, boardPrinter);
+        TictactoeGame game = new TictactoeGame(3, agentX ,humanPlayer, boardPrinter, gameEvaluator);
         game.launchGame();
     }
 
     private static void launchTrainingGames(int numberOfGames) {
         BoardPrinter boardPrinter = new VoidBoardPrinter();
         StatesGenerator statesGenerator = new StatesGenerator(3);
+        GameEvaluator gameEvaluator = new GameEvaluator();
 
-        RandomPlayer agentX = new RandomPlayer();
-//        TicTacToeAgent agentX = getTicTacToeAgent(statesGenerator, GameToken.X, InFileRepository.DEFAULT_FILE_PATH);
-        TicTacToeAgent agentO = getTicTacToeAgent(statesGenerator, GameToken.O, InFileRepository.DEFAULT_FILE_PATH, 0.01);
+        RandomPlayer agentO = new RandomPlayer();
+        TicTacToeAgent agentX = getTicTacToeAgent(statesGenerator, GameToken.X, InFileRepository.DEFAULT_FILE_PATH, 0.1);
+//        TicTacToeAgent agentO = getTicTacToeAgent(statesGenerator, GameToken.O, InFileRepository.DEFAULT_FILE_PATH, 0.01);
 
-        TictactoeGame game = new TictactoeGame(3, agentX, agentO, boardPrinter);
+        TictactoeGame game = new TictactoeGame(3, agentX, agentO, boardPrinter, gameEvaluator);
         game.playMultipleGames(numberOfGames);
     }
 

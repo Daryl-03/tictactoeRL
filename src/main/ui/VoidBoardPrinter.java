@@ -1,4 +1,6 @@
-package main;
+package main.ui;
+
+import main.game.BoardView;
 
 public class VoidBoardPrinter implements BoardPrinter {
     @Override

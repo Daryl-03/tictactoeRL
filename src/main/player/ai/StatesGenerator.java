@@ -1,9 +1,6 @@
-package main.ai;
+package main.player.ai;
 
-import main.BoardView;
-import main.GameEvaluator;
-import main.GameStatus;
-import main.GameToken;
+import main.game.*;
 
 import java.util.*;
 
@@ -12,7 +9,7 @@ public class StatesGenerator {
     final int size;
     GameEvaluator gameEvaluator = new GameEvaluator();
     int count = 0;
-    Set<String> visitedStates = new HashSet<>();
+
 
     public StatesGenerator(int size) {
         this.size = size;
@@ -31,15 +28,18 @@ public class StatesGenerator {
                 grid[i][j] = GameToken.N;
             }
         }
-        generateStatesRecursively(grid, isXTurn, GameToken.X);
+        Set<String> visitedStates = new HashSet<>();
+
+        generateStatesRecursively(grid, isXTurn, GameToken.X,  visitedStates);
         states.remove(boardToString(grid, GameToken.X));
-        generateStatesRecursively(grid, isXTurn, GameToken.O);
+
+        generateStatesRecursively(grid, isXTurn, GameToken.O,   visitedStates);
         states.remove(boardToString(grid, GameToken.O));
         System.out.println("Total states generated: " + states.size());
         return states;
     }
 
-    private void generateStatesRecursively(GameToken[][] gameTokens, boolean isXTurn, GameToken toPlay) {
+    private void generateStatesRecursively(GameToken[][] gameTokens, boolean isXTurn, GameToken toPlay, Set<String> visitedStates) {
 
         String stateKey = boardToString(gameTokens, toPlay);
 
@@ -74,7 +74,7 @@ public class StatesGenerator {
             for (int j = 0; j < size; j++) {
                 if(gameTokens[i][j] == GameToken.N){
                     gameTokens[i][j] = getNextToken(isXTurn);
-                    generateStatesRecursively(gameTokens, !isXTurn, toPlay);
+                    generateStatesRecursively(gameTokens, !isXTurn, toPlay, visitedStates);
                     gameTokens[i][j] = GameToken.N;
                 }
             }
@@ -83,25 +83,16 @@ public class StatesGenerator {
     }
 
     private static double getValueBasedOnPlayer(GameStatus status, GameToken toPlay) {
-        double value = switch (status) {
+        return switch (status) {
             case X_WINS -> toPlay == GameToken.X ? 1 : 0;
             case O_WINS -> toPlay == GameToken.O ? 1 : 0;
             case DRAW -> 0;
             case IN_PROGRESS -> 0.5;
         };
-        return value;
     }
 
     private String boardToString(GameToken[][] board, GameToken toPlay) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(toPlay.toString());
-        sb.append("-");
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                sb.append(board[i][j].toString());
-            }
-        }
-        return sb.toString();
+        return StateSerializer.toKey(board, toPlay);
     }
 
 //    private static List<String> generateAllSymmetricStates(String state, int size) {

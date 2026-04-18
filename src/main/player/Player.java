@@ -1,6 +1,6 @@
 package main.player;
 
-import main.BoardView;
+import main.game.BoardView;
 
 import java.awt.*;
 

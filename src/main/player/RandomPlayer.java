@@ -1,7 +1,7 @@
 package main.player;
 
-import main.BoardView;
-import main.GameToken;
+import main.game.BoardView;
+import main.game.GameToken;
 
 import java.awt.*;
 import java.util.List;

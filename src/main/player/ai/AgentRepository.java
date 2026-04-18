@@ -1,10 +1,10 @@
-package main.ai;
+package main.player.ai;
 
 import java.util.Map;
 
 public interface AgentRepository {
 
     Map<String, Double> readValueFunction();
-    boolean saveValueFunction(Map<String, Double> valueFunction);
+    void saveValueFunction(Map<String, Double> valueFunction);
 
 }

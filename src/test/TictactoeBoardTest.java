@@ -1,8 +1,7 @@
 package test;
 
-import main.BoardView;
-import main.TictatctoeBoard;
-import main.GameToken;
+import main.game.TictatctoeBoard;
+import main.game.GameToken;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
