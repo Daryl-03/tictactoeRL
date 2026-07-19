@@ -1,17 +1,17 @@
 package main.game;
 
-public class TictatctoeBoard implements BoardView {
+public class TictactoeBoard implements BoardView {
     private final int size;
     private GameToken[][] grid;
     private int remainingBoxes;
 
-    public TictatctoeBoard(int size){
+    public TictactoeBoard(int size){
         this.size = size;
         initGrid(size);
         remainingBoxes = size * size;
     }
 
-    public TictatctoeBoard(GameToken[][] grid){
+    public TictactoeBoard(GameToken[][] grid){
         this.size = grid.length;
         this.grid = grid;
         int count = 0;

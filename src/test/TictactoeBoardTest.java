@@ -1,6 +1,6 @@
 package test;
 
-import main.game.TictatctoeBoard;
+import main.game.TictactoeBoard;
 import main.game.GameToken;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,11 +8,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TictactoeBoardTest {
 
-    private TictatctoeBoard board;
+    private TictactoeBoard board;
 
     @BeforeEach
     void setUp() {
-        board = new TictatctoeBoard(3);
+        board = new TictactoeBoard(3);
     }
 
     @Test
@@ -34,14 +34,14 @@ public class TictactoeBoardTest {
     @Test
     void testMakeInvalidMove() {
         board.placeValue(GameToken.X, 1, 1);
-        assertNotEquals(1, board.placeValue(GameToken.O, 1, 1));
+        assertEquals(-1, board.placeValue(GameToken.O, 1, 1));
     }
 
     @Test
     void testMakeMoveOutOfBounds() {
-        assertNotEquals(1, board.placeValue(GameToken.X, -2, 1));
-        assertNotEquals(1, board.placeValue(GameToken.O, 1, 3));
-        assertNotEquals(1, board.placeValue(GameToken.X, 3, 3));
+        assertEquals(-1, board.placeValue(GameToken.X, -2, 1));
+        assertEquals(-1, board.placeValue(GameToken.O, 0, 3));
+        assertEquals(-1, board.placeValue(GameToken.X, 4, 3));
     }
 
 

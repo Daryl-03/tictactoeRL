@@ -6,7 +6,7 @@ import main.player.Player;
 import java.awt.*;
 
 public class TictactoeGame {
-    private final TictatctoeBoard board;
+    private final TictactoeBoard board;
     private final Player player1, player2;
     private final int sizeOfBoard;
     private GameStatus gameStatus = GameStatus.IN_PROGRESS;
@@ -15,7 +15,7 @@ public class TictactoeGame {
     private int gameNumber = 1;
 
     public TictactoeGame(int size, Player player1, Player player2, BoardPrinter boardPrinter, GameEvaluator gameEvaluator){
-        board = new TictatctoeBoard(size);
+        board = new TictactoeBoard(size);
         sizeOfBoard = size;
         this.player1 = player1;
         this.player2 = player2;
@@ -29,11 +29,15 @@ public class TictactoeGame {
         while(gameInProgress){
             Point nextLocation;
             nextLocation = player1Turn ? player1.play(board, gameNumber) : player2.play(board,gameNumber);
-            board.placeValue(
+            int validPlacement = board.placeValue(
                     player1Turn ? GameToken.X : GameToken.O,
                     nextLocation.x,
                     nextLocation.y
             );
+
+            if(validPlacement == -1){
+                continue;
+            }
 
             if(boardPrinter != null)
                 boardPrinter.printBoard(board);

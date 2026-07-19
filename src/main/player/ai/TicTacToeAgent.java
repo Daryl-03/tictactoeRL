@@ -52,7 +52,8 @@ public class TicTacToeAgent implements Player {
         double bestValue = Double.NEGATIVE_INFINITY;
         for (Move move : nextLegalMoves) {
             if (!valueFunction.containsKey(move.state)) {
-                System.out.println(move.state);
+
+                throw new IllegalStateException("Missing value for state: " + move.state);
             }
             double value = valueFunction.get(move.state);
             if (value > bestValue) {
@@ -120,6 +121,7 @@ public class TicTacToeAgent implements Player {
         String finalState = getStateString(board).toString();
         updateLastStateValue(new Move(finalState, null));
         agentRepository.saveValueFunction(valueFunction);
+        this.lastMove =  null;
     }
 
     public double getLearningRate() {
