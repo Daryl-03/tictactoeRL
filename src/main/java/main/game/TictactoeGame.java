@@ -3,8 +3,6 @@ package main.game;
 import main.ui.BoardPrinter;
 import main.player.Player;
 
-import java.awt.*;
-
 public class TictactoeGame {
     private final TictactoeBoard board;
     private final Player player1, player2;
@@ -27,15 +25,15 @@ public class TictactoeGame {
         boolean player1Turn = true;
         boolean gameInProgress = true;
         while(gameInProgress){
-            Point nextLocation;
+            Move nextLocation;
             nextLocation = player1Turn ? player1.play(board, gameNumber) : player2.play(board,gameNumber);
-            int validPlacement = board.placeValue(
+            boolean validPlacement = board.placeValue(
                     player1Turn ? GameToken.X : GameToken.O,
-                    nextLocation.x,
-                    nextLocation.y
+                    nextLocation.row(),
+                    nextLocation.col()
             );
 
-            if(validPlacement == -1){
+            if(!validPlacement){
                 continue;
             }
 

@@ -27,21 +27,21 @@ public class TictactoeBoardTest {
 
     @Test
     void testMakeValidMove() {
-        assertEquals(0, board.placeValue(GameToken.X, 1, 1));
+        assertTrue(board.placeValue(GameToken.X, 1, 1));
         assertEquals(GameToken.X, board.getTokenAt(1, 1));
     }
 
     @Test
     void testMakeInvalidMove() {
         board.placeValue(GameToken.X, 1, 1);
-        assertEquals(-1, board.placeValue(GameToken.O, 1, 1));
+        assertFalse(board.placeValue(GameToken.O, 1, 1));
     }
 
     @Test
     void testMakeMoveOutOfBounds() {
-        assertEquals(-1, board.placeValue(GameToken.X, -2, 1));
-        assertEquals(-1, board.placeValue(GameToken.O, 0, 3));
-        assertEquals(-1, board.placeValue(GameToken.X, 4, 3));
+        assertFalse(board.placeValue(GameToken.X, -2, 1));
+        assertFalse(board.placeValue(GameToken.O, 0, 3));
+        assertFalse(board.placeValue(GameToken.X, 4, 3));
     }
 
 

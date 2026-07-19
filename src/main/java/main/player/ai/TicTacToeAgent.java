@@ -2,10 +2,10 @@ package main.player.ai;
 
 import main.game.BoardView;
 import main.game.GameToken;
+import main.game.Move;
 import main.game.StateSerializer;
 import main.player.Player;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +13,7 @@ import java.util.Map;
 public class TicTacToeAgent implements Player {
     private final Map<String, Double> valueFunction;
     private final AgentRepository agentRepository;
-    private Move lastMove;
+    private CandidateMove lastMove;
     private double learningRate = 0.5;
     private final GameToken agentToken;
     private final double epsilon;
@@ -30,27 +30,27 @@ public class TicTacToeAgent implements Player {
         return epsilon ;
     }
 
-    private List<Move> computeNextLegalMoves(String boardState, BoardView board) {
+    private List<CandidateMove> computeNextLegalMoves(String boardState, BoardView board) {
         String stateWithoutToken = boardState.substring(2);
-        List<Move> nextMoves = new ArrayList<>();
+        List<CandidateMove> nextMoves = new ArrayList<>();
         for (int i = 1; i <= board.getSize(); i++) {
             for (int j = 1; j <= board.getSize(); j++) {
                 if (board.getTokenAt(i, j) == GameToken.N) {
                     StringBuilder newState = new StringBuilder(stateWithoutToken);
                     newState.setCharAt((i - 1) * board.getSize() + (j - 1), agentToken.toString().charAt(0));
                     newState.insert(0, agentToken + "-");
-                    nextMoves.add(new Move(newState.toString(), new Point(i, j)));
+                    nextMoves.add(new CandidateMove(newState.toString(), new Move(i, j)));
                 }
             }
         }
         return nextMoves;
     }
 
-    private Move getGreedyMove(List<Move> nextLegalMoves) {
-        Move bestMove = null;
+    private CandidateMove getGreedyMove(List<CandidateMove> nextLegalMoves) {
+        CandidateMove bestMove = null;
 
         double bestValue = Double.NEGATIVE_INFINITY;
-        for (Move move : nextLegalMoves) {
+        for (CandidateMove move : nextLegalMoves) {
             if (!valueFunction.containsKey(move.state)) {
 
                 throw new IllegalStateException("Missing value for state: " + move.state);
@@ -66,17 +66,17 @@ public class TicTacToeAgent implements Player {
         return bestMove;
     }
 
-    private Move getRandomMove(List<Move> nextLegalMoves) {
+    private CandidateMove getRandomMove(List<CandidateMove> nextLegalMoves) {
 
         int randomIndex = (int) (Math.random() * nextLegalMoves.size());
-        Move move = nextLegalMoves.get(randomIndex);
+        CandidateMove move = nextLegalMoves.get(randomIndex);
         move.setRandom(true);
         return move;
     }
 
-    private Move getNextMove(String boardState, BoardView board, int gameNumber) {
-        List<Move> nextLegalMoves = computeNextLegalMoves(boardState, board);
-        Move greedyMove = getGreedyMove(nextLegalMoves);
+    private CandidateMove getNextMove(String boardState, BoardView board, int gameNumber) {
+        List<CandidateMove> nextLegalMoves = computeNextLegalMoves(boardState, board);
+        CandidateMove greedyMove = getGreedyMove(nextLegalMoves);
         nextLegalMoves.remove(greedyMove);
         double epsilonValue = getEpsilon(gameNumber);
         if (Math.random() < epsilonValue && !nextLegalMoves.isEmpty()) {
@@ -88,9 +88,9 @@ public class TicTacToeAgent implements Player {
     }
 
     @Override
-    public Point play(BoardView board, int gameNumber) {
+    public Move play(BoardView board, int gameNumber) {
         StringBuilder boardState = getStateString(board);
-        Move move = getNextMove(boardState.toString(), board, gameNumber);
+        CandidateMove move = getNextMove(boardState.toString(), board, gameNumber);
         if (move == null) {
             throw new IllegalStateException("No valid moves available");
         }
@@ -101,7 +101,7 @@ public class TicTacToeAgent implements Player {
         return move.coordinates;
     }
 
-    private void updateLastStateValue(Move move) {
+    private void updateLastStateValue(CandidateMove move) {
         if (move.isRandom) {
             return;
         }
@@ -119,7 +119,7 @@ public class TicTacToeAgent implements Player {
     @Override
     public void notifyEnd(BoardView board) {
         String finalState = getStateString(board).toString();
-        updateLastStateValue(new Move(finalState, null));
+        updateLastStateValue(new CandidateMove(finalState, null));
         agentRepository.saveValueFunction(valueFunction);
         this.lastMove =  null;
     }
@@ -132,12 +132,12 @@ public class TicTacToeAgent implements Player {
         this.learningRate = learningRate;
     }
 
-    private static class Move {
+    private static class CandidateMove {
         String state;
-        Point coordinates;
+        Move coordinates;
         boolean isRandom;
 
-        public Move(String state, Point coordinates) {
+        public CandidateMove(String state, Move coordinates) {
             this.state = state;
             this.coordinates = coordinates;
         }

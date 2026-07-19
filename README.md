@@ -11,20 +11,27 @@ The updated value function is stored in a text file (`value_function.txt`), allo
 
 ## Project Structure
 
-*   `src/Main.java`: The main entry point to run the application.
-*   `src/main/`: Contains the core game logic and player representations.
-    *   `TictactoeGame.java`, `TictatctoeBoard.java`: Core logic for the Tic-Tac-Toe game.
+*   `pom.xml`: Maven build configuration.
+*   `src/main/java/Main.java`: The main entry point to run the application.
+*   `src/main/java/main/`: Contains the core game logic and player representations.
+    *   `TictactoeGame.java`, `TictactoeBoard.java`: Core logic for the Tic-Tac-Toe game.
     *   `HumanPlayer.java`: Represents the human player.
     *   `GameEvaluator.java`, `BoardPrinter.java`, etc.: Utility and helper classes for the game.
-*   `src/main/ai/`: Contains the artificial intelligence logic.
+*   `src/main/java/main/player/ai/`: Contains the artificial intelligence logic.
     *   `TicTacToeAgent.java`: The agent that learns and makes decisions.
     *   `StatesGenerator.java`: Utility to generate all possible game states.
     *   `InFileRepository.java`: Manages reading and writing the value function to a file.
-*   `src/test/`: Contains unit tests for the project.
+*   `src/test/java/test/`: Contains unit tests for the project.
 *   `value_function.txt`: Text file storing the agent's "knowledge". It maps a value (win probability) to each game board state.
 
 The program will prompt you to make your move by choosing a cell coordinate (row and column) between 1 and 3.
 The agent will then use its value function to choose the best possible move.
+
+## Build and Test
+
+```bash
+mvn test
+```
 
 ## Milestones
 - [X] Implemented the Tic-Tac-Toe game logic and user interface.

@@ -2,8 +2,8 @@ package main.player;
 
 import main.game.BoardView;
 import main.game.GameToken;
+import main.game.Move;
 
-import java.awt.*;
 import java.util.Scanner;
 
 public class HumanPlayer implements Player {
@@ -15,23 +15,24 @@ public class HumanPlayer implements Player {
     }
 
     @Override
-    public Point play(BoardView board, int gameNumber) {
-        Point play = new Point();
+    public Move play(BoardView board, int gameNumber) {
+        int row;
+        int col;
         do {
 
             do {
                 System.out.println("enter line :");
-                play.x = sc.nextInt();
-            } while (play.x < 1 || play.x > board.getSize());
+                row = sc.nextInt();
+            } while (row < 1 || row > board.getSize());
 
             do {
                 System.out.println("enter col :");
-                play.y = sc.nextInt();
-            } while (play.y < 1 || play.y > board.getSize());
+                col = sc.nextInt();
+            } while (col < 1 || col > board.getSize());
 
-        } while (board.getTokenAt(play.x, play.y) != null && board.getTokenAt(play.x, play.y) != GameToken.N);
+        } while (board.getTokenAt(row, col) != GameToken.N);
 
-        return play;
+        return new Move(row, col);
     }
 
     @Override

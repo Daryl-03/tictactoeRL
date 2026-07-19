@@ -42,13 +42,13 @@ public class TictactoeBoard implements BoardView {
         return (value >= min) && (value <= max );
     }
 
-    public int placeValue(GameToken value, int line, int col){
+    public boolean placeValue(GameToken value, int line, int col){
         if(!isBetween(line, 1, size) || !isBetween(col, 1, size) || remainingBoxes == 0 || grid[line-1][col-1] != GameToken.N)
-            return -1;
+            return false;
 
         grid[line-1][col-1] = value;
         remainingBoxes--;
-        return 0;
+        return true;
     }
 
     public boolean canPlaceMore(){
